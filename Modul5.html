@@ -1,0 +1,137 @@
+    <!DOCTYPE html>
+    <html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Peta Wisata Indonesia</title>
+        
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        
+        <!-- Leaflet JS -->
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+        
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            
+            #map {
+                height: 100vh;
+                width: 100%;
+                border: 5px solid #00060c;
+                border-radius: 15px;
+                overflow: hidden;
+            }
+            
+            .info-panel {
+                position: absolute;
+                bottom: 20px;
+                left: 20px;
+                background: rgba(255,255,255,0.9);
+                padding: 10px 15px;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                z-index: 1000;
+                font-size: 12px;
+                pointer-events: none;
+            }
+            
+            .custom-control {
+                background: white;
+                padding: 10px;
+                border-radius: 5px;
+                box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <div class="info-panel">
+            <strong>📍 Selamat Datang di Peta Wisata Nusantara</strong><br>
+            Geser dan zoom untuk menjelajahi peta
+        </div>
+
+        <script>
+            // ==========================================
+            // 1. INISIALISASI PETA (KOORDINAT & ZOOM
+            // ==========================================
+            var map = L.map('map').setView([-4.449796235386565, 115], 5.5);
+            // KOORDINAT: Gedung Sate, Bandung
+            // ZOOM: 13 (0 = dunia, 18 = sangat dekat)
+            
+            // ==========================================
+            // 2. TAMBAHKAN BASEMAP (PETA DASAR)
+            // ==========================================
+            // OpenStreetMap
+            var osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors',
+            maxZoom: 19
+            }).addTo(map); // .addTo(map) = tampil default saat buka
+
+            // Google Maps - Street
+            var googleStreet = L.tileLayer('https://mt1.google.com/vt/lyrs=r&x={x}&y={y}&z={z}', {
+                attribution: '&copy; Google Maps',
+                maxZoom: 20
+            });
+
+            // Google Maps - Satellite
+            var googleSatellite = L.tileLayer('https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+                attribution: '&copy; Google Maps',
+                maxZoom: 20
+            });
+
+            // Google Maps - Hybrid (Satelit + Label)
+            var googleHybrid = L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                attribution: '&copy; Google Maps',
+                maxZoom: 20
+            });
+
+            // ==========================================
+            // 3. TAMBAHKAN SCALE BAR (SKALA PETA)
+            // ==========================================
+            L.control.scale({
+                metric: true,
+                imperial: false,
+                position: 'bottomright'
+            }).addTo(map);
+            
+            // ==========================================
+            // 4. TAMBAHKAN MARKER CONTOH
+            // ==========================================
+            var markercontoh = L.marker([-6.902181925131783, 107.61879853829574]).addTo(map);
+            markercontoh.bindPopup('<b>Gedung Sate</b><br>Bandung, Jawa Barat<br><br>Ikon arsitektur kolonial Belanda yang menjadi simbol kota Bandung. Gedung ini memiliki atap berbentuk sate dan sering digunakan untuk acara resmi pemerintah.');
+            
+            var marker1 = L.marker([-7.350614, 106.422713]).addTo(map);
+            marker1.bindPopup('<b>Ujung Genteng</b><br>Sukabumi, Jawa Barat<br><br>Pantai selatan Sukabumi yang terkenal dengan pasir putih, ombak selancar, dan penangkaran penyu.');
+    
+            var marker2 = L.marker([-6.8930136114782625, 108.40683826138111]).addTo(map);
+            marker2.bindPopup('<b>Gunung Ciremai</b><br>Cirebon, Jawa Barat<br><br>Gunung tertinggi di Jawa Barat dengan pemandangan alam yang memukau dan jalur pendakian yang menantang.');
+
+            var marker3 = L.marker([2.651905532521582, 98.92521722876099]).addTo(map);
+            marker3.bindPopup('<b>Bukit Senyum</b><br>Desa Motung, Sumatera Utara<br><br>Destinasi wisata alam dengan pemandangan perbukitan hijau yang menenangkan dan udara segar khas pegunungan.    ');
+            
+            // ==========================================
+            // 5. TAMBAHKAN LAYER CONTROL
+            // ==========================================
+            var baseMaps = {
+            "OpenStreetMap"      : osmLayer,
+            "Google Street"      : googleStreet,
+            "Google Satellite"   : googleSatellite,
+            "Google Hybrid"      : googleHybrid
+                };
+
+            var overlayMaps = {};
+
+            L.control.layers(baseMaps, overlayMaps).addTo(map);
+            
+            console.log('Peta berhasil dimuat!');
+        </script>
+    </body>
+    </html>
